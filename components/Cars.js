@@ -8,7 +8,8 @@ export default class Cars extends React.Component{
         super(props); 
         this.state = {
             buttonText : "ON",
-            buttonBool : true
+            buttonBool : true,
+            make       : "",
             
         }
     }
@@ -28,13 +29,19 @@ export default class Cars extends React.Component{
     }
 
     render(){
+        console.log(this.state.make)
         return(
             <View style={styles.cars}>
                 <Text style={styles.title}>New Car Submission Form </Text>
                 
                 <View style={styles.subField}>
                 <Text>Make</Text>
-                <TextInput style={styles.textInput}></TextInput>
+                <TextInput
+                    style={styles.textInput}
+                    defaultValue={this.state.make}
+                    onChangeText={(e) => this.setState({make: e})}
+                
+                ></TextInput>
                 </View>
                 {/* <Button title={this.state.buttonText} onPress={this.doSomething}/> */}
             </View>
