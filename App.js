@@ -7,7 +7,7 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to Module 3!</Text>
       <Text>Class of October 2022</Text>
-      <Cars></Cars>
+      <Cars comText="Value1"></Cars>
       <StatusBar style="auto" />
     </View>
   );
