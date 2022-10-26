@@ -10,26 +10,33 @@ export default class Cars extends React.Component{
             buttonText : "ON",
             buttonBool : true,
             make       : "",
+            model      : "",
+            year       : "",
+            odometer   : "",
             
         }
     }
 
 
-    doSomething = () => {
-        console.log('Button Pressed')
+    // doSomething = () => {
+    //     console.log('Button Pressed')
 
-        this.setState({buttonBool: !this.state.buttonBool})
+    //     this.setState({buttonBool: !this.state.buttonBool})
         
-        if(this.state.buttonBool){
-            this.setState({buttonText: "ON"})
-        } else {
-            this.setState({buttonText: "OFF"})
-        }
+    //     if(this.state.buttonBool){
+    //         this.setState({buttonText: "ON"})
+    //     } else {
+    //         this.setState({buttonText: "OFF"})
+    //     }
         
+    // }
+
+    submitNewCar = () => {
+        console.log(this.state)
     }
 
     render(){
-        console.log(this.state.make)
+        
         return(
             <View style={styles.cars}>
                 <Text style={styles.title}>New Car Submission Form </Text>
@@ -40,9 +47,36 @@ export default class Cars extends React.Component{
                     style={styles.textInput}
                     defaultValue={this.state.make}
                     onChangeText={(e) => this.setState({make: e})}
-                
                 ></TextInput>
                 </View>
+
+                <View style={styles.subField}>
+                <Text>Model</Text>
+                <TextInput
+                    style={styles.textInput}
+                    defaultValue={this.state.model}
+                    onChangeText={(e) => this.setState({model: e})}
+                ></TextInput>
+                </View>
+
+                <View style={styles.subField}>
+                <Text>Year</Text>
+                <TextInput
+                    style={styles.textInput}
+                    defaultValue={this.state.year}
+                    onChangeText={(e) => this.setState({year: e})}
+                ></TextInput>
+                </View>
+
+                <View style={styles.subField}>
+                <Text>Odometer</Text>
+                <TextInput
+                    style={styles.textInput}
+                    defaultValue={this.state.odometer}
+                    onChangeText={(e) => this.setState({odometer: e})}
+                ></TextInput>
+                </View>
+                <Button color="#BE8D34" title="Submit" onPress={this.submitNewCar}></Button>
                 {/* <Button title={this.state.buttonText} onPress={this.doSomething}/> */}
             </View>
         )
