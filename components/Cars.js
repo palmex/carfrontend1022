@@ -37,7 +37,8 @@ export default class Cars extends React.Component{
             "make": this.state.make,
             "model": this.state.model,
             "year": this.state.year,
-            "odometer": this.state.odometer
+            "odometer": this.state.odometer,
+            "cars": []
         }
         // THIS IS WHERE WE ADD TO DATABASE
         // 1. make a REQUEST call to the backend
@@ -46,6 +47,13 @@ export default class Cars extends React.Component{
         // handle RESPONSE from server (and any errors)
 
         createNewCar(carDetails)
+    }
+
+    fetchAllCars = async () => {
+       
+
+       const allCars = await getAllCars()
+       this.setState({cars: allCars})
     }
 
     render(){
@@ -89,7 +97,20 @@ export default class Cars extends React.Component{
                 ></TextInput>
                 </View>
                 <Button color="#BE8D34" title="Submit" onPress={this.submitNewCar}></Button>
-                {/* <Button title={this.state.buttonText} onPress={this.doSomething}/> */}
+                <Button title="Get All" onPress={this.fetchAllCars}/>
+                {(this.state.cars)?(this.state.cars.map((car) => 
+                <View style={styles.individual} key={car.car_id}>
+                <Text style={{fontSize: 25}}>
+                    {car.make} - {car.model} {car.year}
+                </Text>
+                <Text >
+                    This car has {car.odometer} miles on it.
+                </Text>
+                <Text >
+                     {car.car_id}
+                </Text>
+                </View>)):(<></>)}
+
             </View>
         )
     }
@@ -128,6 +149,39 @@ async function createNewCar(carDetails){
     )
 }
 
+async function getAllCars(){
+ 
+
+    return fetch('http://localhost:3000/cars/all', {
+        method:'GET',
+        withCredentials: true,
+        headers:{
+            "Content-Type":"application/json",
+            "Accept":"application/json",
+            "Access-Control-Allow-Headers":"*",
+            "admin":'true',
+            "Access-Control-Allow-Origin":"http://localhost:3000/*"
+        }
+    }).then(response => {
+        if (response.ok){
+            var newCar = response.json()
+            console.log(newCar)
+            return newCar
+        }
+
+        else {
+            var error = new Error('Error' + response.status + ":" + response.statusText)
+            error.response = response 
+            return error
+        }
+    },
+    error => {
+        var errmess = new Error(error.message)
+        throw errmess
+    }
+    )
+}
+
 const styles = StyleSheet.create({
     cars: {
       flex: 1,
@@ -138,6 +192,13 @@ const styles = StyleSheet.create({
       padding: '5%',
       
       justifyContent: 'center',
+    },
+    individual:{
+        backgroundColor: "white",
+        borderRadius: "5%",
+        minWidth: "65%",
+        margin: "5%",
+        padding: "5%"        
     },
     title: {
       color:'#000',
