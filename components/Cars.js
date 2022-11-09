@@ -13,7 +13,6 @@ export default class Cars extends React.Component{
             model      : "",
             year       : "",
             odometer   : "",
-            
         }
     }
 
@@ -33,15 +32,28 @@ export default class Cars extends React.Component{
 
     submitNewCar = () => {
         console.log(this.state)
+
+        let carDetails = {
+            "make": this.state.make,
+            "model": this.state.model,
+            "year": this.state.year,
+            "odometer": this.state.odometer
+        }
+        // THIS IS WHERE WE ADD TO DATABASE
+        // 1. make a REQUEST call to the backend
+        // 2. backend will talk to DB
+        // http://localhost:3000/cars/new
+        // handle RESPONSE from server (and any errors)
+
+        createNewCar(carDetails)
     }
 
     render(){
-        
         return(
             <View style={styles.cars}>
                 <Text style={styles.title}>New Car Submission Form </Text>
-                
                 <View style={styles.subField}>
+
                 <Text>Make</Text>
                 <TextInput
                     style={styles.textInput}
@@ -82,6 +94,39 @@ export default class Cars extends React.Component{
         )
     }
 };
+
+async function createNewCar(carDetails){
+    console.log("carDetails:",carDetails)
+
+    return fetch('http://localhost:3000/cars/new', {
+        method:'POST',
+        withCredentials: true,
+        headers:{
+            "Content-Type":"application/json",
+            "Accept":"application/json",
+            "Access-Control-Allow-Headers":"*",
+            "Access-Control-Allow-Origin":"http://localhost:3000/*"
+        },
+        body: JSON.stringify(carDetails)
+    }).then(response => {
+        if (response.ok){
+            var newCar = response.json()
+            console.log(newCar)
+            return newCar
+        }
+
+        else {
+            var error = new Error('Error' + response.status + ":" + response.statusText)
+            error.response = response 
+            return error
+        }
+    },
+    error => {
+        var errmess = new Error(error.message)
+        throw errmess
+    }
+    )
+}
 
 const styles = StyleSheet.create({
     cars: {
